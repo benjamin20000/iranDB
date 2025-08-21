@@ -1,8 +1,7 @@
-from fetcher import  Fetcher
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from tqdm.auto import tqdm
 import pandas as pd
-from config import blacklist_path
+from app.config import blacklist_path
 
 class Processor:
     def _count_words(self, tweet):
@@ -59,12 +58,5 @@ class Processor:
         df['weapons_detected'] = text_col.progress_apply(self._detected_weapons, args=(black_list,))
 
 
-df = Fetcher.get_df()
-pr = Processor()
-pr.assign_weapons_detected(df)
-pr.assign_rarest_world(df)
-pr.assign_emotion(df)
-pr.assign_weapons_detected(df)
 
-print(df.loc[5])
 
