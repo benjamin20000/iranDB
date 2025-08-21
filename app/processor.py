@@ -11,12 +11,15 @@ def _count_words(tweet):
         else:
             count[word] = 1
     return count
+def _find_rarest_world(tweet):
+    my_dict = _count_words(tweet)
+    return min(my_dict, key=my_dict.get)
 
 def assign_rarest_world(df):
-    df['rarest_world'] = None
-    for index in df.index:
-        my_dict = _count_words(df.loc[index]["Text"])
-        df.loc[index,'rarest_world'] = min(my_dict, key=my_dict.get)
+    text_col = df["Text"]
+    tqdm.pandas()
+    df['rarest_world'] =  text_col.progress_apply(_find_rarest_world)
+
 
 def _classified_emotion(tweet):
     score = SentimentIntensityAnalyzer().polarity_scores(tweet)
@@ -26,17 +29,15 @@ def assign_emotion(df):
     text_col = df["Text"]
     tqdm.pandas()
     scores = text_col.progress_apply(_classified_emotion) # pandas apply
-    print(scores)
     bins = [-1, -0.5, 0.5, 1]
     labels = ["negative", "neutral", "positive"]
     df['sentiment'] = pd.cut(scores, bins=bins, labels=labels, right=True)
-    print(df)
 
 
 
 
 
 df = Fetcher.get_df()
-# assign_rarest_world(df)
+assign_rarest_world(df)
 assign_emotion(df)
-# print(df)
+print(df)
