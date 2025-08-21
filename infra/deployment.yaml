@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: iran-db
-          image: benny2025r/iran_db_repo:0
+          image: benny2025r/iran_db_repo:2
           ports:
             - containerPort: 27017
 
