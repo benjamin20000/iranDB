@@ -12,9 +12,12 @@ def _count_words(tweet):
             count[word] = 1
     return count
 
-def find_rarest_world():
+def assign_rarest_world():
     df = Fetcher.get_df()
-    _count_words(df.loc[2]["Text"])
+    df['rarest_world'] = None
+    for index in df.index:
+        my_dict = _count_words(df.loc[index]["Text"])
+        df.loc[index,'rarest_world'] = min(my_dict, key=my_dict.get)
+    print(df)
 
-
-find_rarest_world()
+assign_rarest_world()
