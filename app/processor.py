@@ -38,21 +38,29 @@ def assign_emotion(df):
 
 
 def _load_blacklist():
+    black_list = []
     with open(blacklist_path, "r") as file:
-        text = file.read()
-        black_list = text.split()
-        return black_list
+        for line in file:
+            black_list.append(line.rstrip())
+    return black_list
 
-def _detected_weapons():
+
+def _detected_weapons(tweet,black_list):
+    words = tweet.split()
+    for word in words:
+        if word in black_list:
+            return word
+    return ""
 
 def assign_weapons_detected(df):
     black_list = _load_blacklist()
     text_col = df["Text"]
     tqdm.pandas()
-    df['rarest_world'] = text_col.progress_apply(_detected_weapons)
+    df['weapons_detected'] = text_col.progress_apply(_detected_weapons, args=(black_list,))
+    print(df['weapons_detected'])
 
-_load_blacklist()
 # df = Fetcher.get_df()
+# assign_weapons_detected(df)
 # assign_rarest_world(df)
 # assign_emotion(df)
 # print(df)
