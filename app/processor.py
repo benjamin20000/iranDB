@@ -1,3 +1,5 @@
+import os
+
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 from tqdm.auto import tqdm
@@ -30,7 +32,10 @@ class Processor:
 
     def assign_emotion(self, df):
         tqdm.pandas() #init tqdm lib
-        nltk.download('vader_lexicon') # download vader_lexicon for nltk lib
+        nltk_dir = "/tmp/nltk"
+        os.makedirs(nltk_dir,exist_ok=True)
+        nltk.data.path.append(nltk_dir)
+        nltk.download('vader_lexicon',download_dir=nltk_dir,quiet=True) # download vader_lexicon for nltk lib
         text_col = df["Text"]
         scores = text_col.progress_apply(self._classified_emotion) # pandas apply
         bins = [-1, -0.5, 0.5, 1]
