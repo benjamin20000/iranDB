@@ -3,12 +3,11 @@ from app.processor import Processor
 
 
 class Manager:
-    def __init__(self, flag=True):
+    def __init__(self, flag):
         self.df = Fetcher.get_df()
-        if len(self.df) == 0:
-            flag = False
+        if self.df.shape[0] == 0:
+            flag.value = False
         self.processor = Processor()
-
 
 
     def process(self):
