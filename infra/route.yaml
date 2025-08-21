@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: iran-db-route
+spec:
+  port:
+    targetPort: 8000
+  to:
+    kind: Service
+    name: iran-db-service

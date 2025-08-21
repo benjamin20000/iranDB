@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iran-db
+  namespace: benny3644-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iran-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: iran-db
+    spec:
+      containers:
+        - name: iran-db
+          image: benny2025r/iran_db_repo:0
+          ports:
+            - containerPort: 27017
+
